@@ -40,8 +40,14 @@ app.get('/', function (req, res) {
     if (err) return console.log('DATA ERROR\n', err);
     for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Waiting) break;
-    if (i == data.Property.length) res.render('ShowNumber', 0);
-    res.render('ShowNumber', 1);
+    if (i == data.Property.length) {
+      var number = {num: 0};
+      res.render('ShowNumber', number);
+    }
+    else {
+      var number = {num: 1};
+      res.render('ShowNumber', number);
+    }
   });
 });
 
