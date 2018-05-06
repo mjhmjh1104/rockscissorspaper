@@ -227,6 +227,8 @@ app.get('/del', function(req, res) {
     data.save(function(err) {
       if (err) return console.log('DATA ERROR\n', err);
     });
+    var number = {num: "done"};
+    res.render('Show', number);
   });
 });
 
