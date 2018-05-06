@@ -117,15 +117,13 @@ app.get('/challenger', function(req, res) {
 });
 
 app.get('/init', function(req, res) {
-  Data.findOne({Name: 'main'}, function(err, data) {
-    if (err) return console.log('DATA ERROR\n', err);
-  }).remove().exec();
+  Data.findOne({Name: 'main'}).remove().exec();
   Data.create({Name: 'main', RoomCount: 0}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
     console.log('DATA INITAILIZED\n', data);
   });
-  var string = {num: "done"};
-  res.render('Show', string);
+  var number = {num: "done"};
+  res.render('Show', number);
 });
 
 app.get('/start', function(req, res) {
