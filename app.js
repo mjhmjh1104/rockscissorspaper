@@ -114,6 +114,16 @@ app.get('/challenger', function(req, res) {
   });
 });
 
+app.get('/init', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('Data Error\n', err);
+  }).remove().exec();
+  Data.create({Name: 'main', RoomCount: 0}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    console.log('DATA INITAILIZED\n', data);
+  });
+});
+
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('SERVER STARTED');
