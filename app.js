@@ -92,6 +92,28 @@ app.get('/join', function(req, res) {
   });
 });
 
+app.get('/:room/waiting', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Num == req.param.room) break;
+    var number = {num: data.Property[i].Waiting};
+    res.render('Show', number);
+  });
+});
+
+app.get('/:room/challenger', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('Data ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Num == req.param.room) break;
+    if (!data.Property[i].Waiting) {
+      var string = {str: data.Property[i].Challenger};
+      res.render('Show', string);
+    }
+  });
+});
+
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('SERVER STARTED');
