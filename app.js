@@ -21,7 +21,9 @@ var dataSchema = mongoose.Schema({
     StartMain: Number,
     StartChallenger: Number,
     MainGame: Number,
-    ChallengerGame: Number
+    ChallengerGame: Number,
+    MainConnect: Number,
+    CallengerConnect: Number
   }],
   RoomCount: Number
 });
@@ -59,7 +61,7 @@ app.get('/create', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
     var length = data.Property.length;
-    data.Property.push({Num: data.RoomCount++, Main: req.query.id, Waiting: 1, StartMain: 0, StartChallenger: 0, MainGame: 0, ChallengerGame: 0});
+    data.Property.push({Num: data.RoomCount++, Main: req.query.id, Waiting: 1, StartMain: 0, StartChallenger: 0, MainGame: 0, ChallengerGame: 0, MainConnect: 5, ChallengerConnect: 5});
     data.save(function(err){
       if (err) return console.log('DATA ERROR\n', err);
     });
@@ -189,6 +191,42 @@ app.get('/game', function(req, res) {
       number.num = data.Property[i].MainGame;
       res.render('Show', number);
     }
+  });
+});
+
+app.get('/connect', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Num == req.query.room) break;
+    var number = {num: 0};
+    if (req.query.main == 1) {
+      data.Property[i].MainConnect--;
+      data.save(function(err) {
+        if (err) return console.log('DATA ERROR\n', err);
+      });
+      number.num = data.Property[i].ChallengerConnect;
+      res.render('Show', number);
+    } else {
+      data.Property[i].ChallengerConnect--;
+      data.save(function(err) {
+        if (err) return console.log('DATA ERROR\n', err);
+      });
+      number.num = data.Property[i].MainConnect;
+      res.render('Show', number);
+    }
+  });
+});
+
+app.get('/del', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Num == req.query.room) break;
+    data.Property.splice(i, 1);
+    data.save(function(err) {
+      if (err) return console.log('DATA ERROR\n', err);
+    });
   });
 });
 
