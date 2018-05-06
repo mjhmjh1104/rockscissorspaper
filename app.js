@@ -63,7 +63,7 @@ app.get('/create', function(req, res) {
     data.save(function(err){
       if (err) return console.log('DATA ERROR\n', err);
     });
-    var number = {num: data.Property[length].Challenger};
+    var number = {num: data.Property[length].Num};
     res.render('Show', number);
   });
 });
