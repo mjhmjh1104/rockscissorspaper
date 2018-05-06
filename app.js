@@ -87,8 +87,8 @@ app.get('/join', function(req, res) {
     data.save(function(err) {
       if (err) return console.log('DATA ERROR\n', err);
     });
-    var string = {str: data.Property[i].Main};
-    res.render('Show', string);
+    var number = {num: data.Property[i].Main};
+    res.render('Show', number);
   });
 });
 
@@ -108,8 +108,8 @@ app.get('/:room/challenger', function(req, res) {
     for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Num == req.param.room) break;
     if (!data.Property[i].Waiting) {
-      var string = {str: data.Property[i].Challenger};
-      res.render('Show', string);
+      var number = {num: data.Property[i].Challenger};
+      res.render('Show', number);
     }
   });
 });
