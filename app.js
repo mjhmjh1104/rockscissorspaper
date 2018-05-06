@@ -141,6 +141,9 @@ app.get('/start', function(req, res) {
       number.num =  data.Property[i].StartMain;
       res.render('Show', number);
     }
+    data.save(function(err) {
+      if (err) return console.log('DATA ERROR\n', err);
+    });
   });
 });
 
