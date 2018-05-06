@@ -92,21 +92,21 @@ app.get('/join', function(req, res) {
   });
 });
 
-app.get('/:room/waiting', function(req, res) {
+app.get('/waiting', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
     for (var i = 0; i < data.Property.length; i++)
-      if (data.Property[i].Num == req.param.room) break;
+      if (data.Property[i].Num == req.query.room) break;
     var number = {num: data.Property[i].Waiting};
     res.render('Show', number);
   });
 });
 
-app.get('/:room/challenger', function(req, res) {
+app.get('/challenger', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
     if (err) return console.log('Data ERROR\n', err);
     for (var i = 0; i < data.Property.length; i++)
-      if (data.Property[i].Num == req.param.room) break;
+      if (data.Property[i].Num == req.query.room) break;
     if (!data.Property[i].Waiting) {
       var number = {num: data.Property[i].Challenger};
       res.render('Show', number);
