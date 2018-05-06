@@ -129,7 +129,7 @@ app.get('/init', function(req, res) {
 app.get('/start', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
-    for (var i = 0; k < data.Property.length; i++)
+    for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Num == req.query.room) break;
     var number = {num: 0};
     if (req.query.main) {
