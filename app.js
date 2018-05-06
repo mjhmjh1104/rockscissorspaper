@@ -201,14 +201,16 @@ app.get('/connect', function(req, res) {
       if (data.Property[i].Num == req.query.room) break;
     var number = {num: 0};
     if (req.query.main == 1) {
-      data.Property[i].MainConnect--;
+      data.Property[i].MainConnect++;
+      data.Property[i].ChallengerConnect--;
       data.save(function(err) {
         if (err) return console.log('DATA ERROR\n', err);
       });
       number.num = data.Property[i].ChallengerConnect;
       res.render('Show', number);
     } else {
-      data.Property[i].ChallengerConnect--;
+      data.Property[i].ChallengerConnect++;
+      data.Property[i].MainConnect--;
       data.save(function(err) {
         if (err) return console.log('DATA ERROR\n', err);
       });
