@@ -18,7 +18,9 @@ var dataSchema = mongoose.Schema({
     Main: String,
     Challenger: String,
     Waiting: Number,
-    Challenge: [Number]
+    Challenge: [Number],
+    StartMain: Number,
+    StartChallenger: Number
   }],
   RoomCount: Number
 });
@@ -56,7 +58,7 @@ app.get('/create', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
     var length = data.Property.length;
-    data.Property.push({Num: data.RoomCount++, Main: req.query.id, Waiting: 1});
+    data.Property.push({Num: data.RoomCount++, Main: req.query.id, Waiting: 1, StartMain: 0, StartChallenger: 0});
     data.save(function(err){
       if (err) return console.log('DATA ERROR\n', err);
     });
@@ -104,7 +106,7 @@ app.get('/waiting', function(req, res) {
 
 app.get('/challenger', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
-    if (err) return console.log('Data ERROR\n', err);
+    if (err) return console.log('DATA ERROR\n', err);
     for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Num == req.query.room) break;
     if (!data.Property[i].Waiting) {
@@ -116,11 +118,31 @@ app.get('/challenger', function(req, res) {
 
 app.get('/init', function(req, res) {
   Data.findOne({Name: 'main'}, function(err, data) {
-    if (err) return console.log('Data Error\n', err);
+    if (err) return console.log('DATA ERROR\n', err);
   }).remove().exec();
   Data.create({Name: 'main', RoomCount: 0}, function(err, data) {
     if (err) return console.log('DATA ERROR\n', err);
     console.log('DATA INITAILIZED\n', data);
+  });
+  var string = {num: "done"};
+  res.render('Show', string);
+});
+
+app.get('/start', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; k < data.Property.length; i++)
+      if (data.Property[i].Num == req.query.room) break;
+    var number = {num: 0};
+    if (req.query.main) {
+      data.Property[i].StartMain = 1;
+      number.num = data.Property[i].StartChallenger;
+      res.render('Show', number);
+    } else {
+      data.Property[i].StartChallenger = 1;
+      number.num =  data.Property[i].StartMain;
+      res.render('Show', number);
+    }
   });
 });
 
