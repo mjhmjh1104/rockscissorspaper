@@ -134,16 +134,19 @@ app.get('/start', function(req, res) {
     var number = {num: 0};
     if (req.query.main) {
       data.Property[i].StartMain = 1;
+      data.save(function(err) {
+        if (err) return console.log('DATA ERROR\n', err);
+      });
       number.num = data.Property[i].StartChallenger;
       res.render('Show', number);
     } else {
       data.Property[i].StartChallenger = 1;
+      data.save(function(err) {
+        if (err) return console.log('DATA ERROR\n', err);
+      });
       number.num =  data.Property[i].StartMain;
       res.render('Show', number);
     }
-    data.save(function(err) {
-      if (err) return console.log('DATA ERROR\n', err);
-    });
   });
 });
 
