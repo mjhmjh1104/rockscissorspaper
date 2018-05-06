@@ -132,7 +132,7 @@ app.get('/start', function(req, res) {
     for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Num == req.query.room) break;
     var number = {num: 0};
-    if (req.query.main) {
+    if (req.query.main == 1) {
       data.Property[i].StartMain = 1;
       data.save(function(err) {
         if (err) return console.log('DATA ERROR\n', err);
