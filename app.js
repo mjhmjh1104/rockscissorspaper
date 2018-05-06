@@ -40,13 +40,14 @@ app.get('/', function (req, res) {
     if (err) return console.log('DATA ERROR\n', err);
     for (var i = 0; i < data.Property.length; i++)
       if (data.Property[i].Waiting) break;
+    var number = {num: 0};
     if (i == data.Property.length) {
-      var number = {num: 0};
-      res.render('ShowNumber', number);
+      number.num = 0;
+      res.render('Show', number);
     }
     else {
-      var number = {num: 1};
-      res.render('ShowNumber', number);
+      number.num = 1;
+      res.render('Show', number);
     }
   });
 });
@@ -60,7 +61,34 @@ app.get('/create', function(req, res) {
       if (err) return console.log('DATA ERROR\n', err);
     });
     var number = {num: data.Property[length].Num};
-    res.render('ShowNumber', number);
+    res.render('Show', number);
+  });
+});
+
+app.get('/main', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Waiting) {
+        var number = {num: data.Property[i].Num};
+        res.render('Show', number);
+        break;
+      }
+  });
+});
+
+app.get('/join', function(req, res) {
+  Data.findOne({Name: 'main'}, function(err, data) {
+    if (err) return console.log('DATA ERROR\n', err);
+    for (var i = 0; i < data.Property.length; i++)
+      if (data.Property[i].Num == req.query.room) break;
+    data.Property[i].Challenger = req.query.id;
+    data.Property[i].Waiting = 0;
+    data.save(function(err) {
+      if (err) return console.log('DATA ERROR\n', err);
+    });
+    var string = {str: data.Property[i].Main};
+    res.render('Show', string);
   });
 });
 
